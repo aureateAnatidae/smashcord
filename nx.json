@@ -14,13 +14,7 @@
     "test": {
       "cache": true
     },
-    "test:unit": {
-      "cache": true
-    },
     "check": {
-      "cache": true
-    },
-    "lint": {
       "cache": true
     }
   }
