@@ -1,23 +1,31 @@
 {
-    "name": "grindcord",
-    "private": true,
-    "author": "aureateAnatidae",
-    "license": "MIT",
-    "type": "module",
-    "version": "0.0.0",
-    "scripts": {
-        "preinstall": "npx only-allow pnpm",
-        "check": "turbo run check",
-        "dev": "turbo run dev",
-        "test": "vitest",
-        "build": "turbo run build --concurrency 12",
-        "preview": "turbo run preview",
-        "ci:build": "turbo run build test"
-    },
-    "devDependencies": {
-        "@types/node": "^24.10.1",
-        "typescript": "^5.9.3",
-        "vite-tsconfig-paths": "^5.1.4",
-        "vitest": "^4.0.14"
-    }
+  "name": "grindcord",
+  "private": true,
+  "author": "aureateAnatidae",
+  "license": "MIT",
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "check": "nx run-many -t check",
+    "build": "nx run-many --parallel 6 -t build",
+    "test": "vitest",
+    "ci:build": "nx run-many -t build test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.8",
+    "@nx/vitest": "22.1.3",
+    "@nx/web": "22.1.3",
+    "@swc/cli": "^0.7.9",
+    "@swc/core": "^1.15.3",
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.14",
+    "@vitest/ui": "^4.0.0",
+    "jiti": "2.4.2",
+    "nx": "22.1.3",
+    "only-allow": "^1.2.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.14"
+  }
 }

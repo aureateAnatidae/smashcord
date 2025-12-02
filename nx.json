@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "@nx/vitest:test": {
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default"
+      ]
+    },
+    "build": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    },
+    "test:unit": {
+      "cache": true
+    },
+    "check": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    }
+  }
+}

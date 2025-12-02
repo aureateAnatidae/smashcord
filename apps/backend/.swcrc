@@ -1,0 +1,23 @@
+{
+    "$schema": "https://swc.rs/schema.json",
+    "jsc": {
+        "parser": {
+            "syntax": "typescript",
+            "tsx": false,
+            "decorators": false,
+            "dynamicImport": false
+        },
+        "baseUrl": "src",
+        "paths": {
+            "@seeds/*": ["../seeds/*"],
+            "@test/*": ["test/*"],
+            "@db/*": ["db/*"],
+            "@v1/*": ["v1/*"]
+        }
+    },
+    "module": {
+        "type": "nodenext",
+        "resolveFully": true
+    },
+    "minify": false
+}

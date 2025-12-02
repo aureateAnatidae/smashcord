@@ -1,0 +1,26 @@
+{
+    "name": "backend",
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "swc src seeds -d dist",
+        "start": "node dist/index.js",
+        "test": "vitest --typecheck",
+        "test:unit": "vitest unit",
+        "check": "biome check"
+    },
+    "dependencies": {
+        "@hono/node-server": "^1.19.6",
+        "@hono/standard-validator": "^0.2.0",
+        "@hono/zod-validator": "^0.7.5",
+        "better-sqlite3": "^12.4.6",
+        "hono": "^4.10.6",
+        "hono-openapi": "^1.1.1",
+        "knex": "^3.1.0",
+        "pino": "^10.1.0",
+        "zod": "^4.1.13"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^10.1.0"
+    }
+}
