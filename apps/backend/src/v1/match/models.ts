@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Knex } from "knex";
 
 export const MatchRecord = z.object({
     match_id: z.int(),
@@ -8,7 +9,7 @@ export const MatchRecord = z.object({
 export type MatchRecord = z.infer<typeof MatchRecord>;
 export const MatchTable = {
     table_name: "Match",
-    initialize(table) {
+    initialize(table: Knex.TableBuilder) {
         table.increments("match_id");
         table.string("guild_id").index("guild_id_idx");
         // https://github.com/knex/knex/issues/6283
@@ -24,7 +25,7 @@ export const MatchPlayerRecord = z.object({
 export type MatchPlayerRecord = z.infer<typeof MatchPlayerRecord>;
 export const MatchPlayerTable = {
     table_name: "MatchPlayer",
-    initialize(table) {
+    initialize(table: Knex.TableBuilder) {
         table.primary(["match_id", "user_id"]);
 
         table.integer("match_id").unsigned();
@@ -48,12 +49,8 @@ export const MatchCharacterRecord = z.object({
 export type MatchCharacterRecord = z.infer<typeof MatchCharacterRecord>;
 export const MatchCharacterTable = {
     table_name: "MatchCharacter",
-    initialize(table) {
-        table.primary(["match_id", "user_id"]);
-        table.unique(["match_id", "user_id", "fighter_number"], {
-            indexName: "match_character_idx",
-            useConstraint: true,
-        });
+    initialize(table: Knex.TableBuilder) {
+        table.primary(["match_id", "user_id", "fighter_number"])
 
         table.integer("match_id").unsigned();
         table.string("user_id");
@@ -75,7 +72,7 @@ export const MatchCharacterTable = {
 // Lookup table for SSBU characters
 export const SSBUCharTable = {
     table_name: "SSBUChar",
-    initialize(table) {
+    initialize(table: Knex.TableBuilder) {
         table.increments("fighter_number");
         table.string("character_name");
     },

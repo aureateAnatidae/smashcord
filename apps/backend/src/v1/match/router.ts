@@ -1,4 +1,4 @@
-import type { MatchRecord, MatchReport } from "@v1/match/schemas";
+import type { MatchReport } from "@v1/match/schemas";
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 

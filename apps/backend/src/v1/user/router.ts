@@ -5,8 +5,10 @@ import { z } from "zod";
 
 const app = new Hono();
 
+const UserPoints = z.object({ points: z.int() });
+
 app.get(
-    "/:user_id",
+    "/:guild_id/:user_id",
     describeRoute({
         description: "Get a user's points in a guild",
         responses: {
@@ -14,15 +16,15 @@ app.get(
                 description: "Successful response",
                 content: {
                     "application/json": {
-                        schema: { points: z.number() },
+                        schema: resolver(UserPoints),
                     },
                 },
             },
         },
     }),
-    (c) => {
-        const user_id = c.req.param("user_id");
-        return getUserPoints(user_id);
+    async (c) => {
+        const { guild_id, user_id } = c.req.param();
+        return c.json({ points: await getUserPoints(guild_id, user_id) });
     },
 );
 // Get a guild's leaderboard

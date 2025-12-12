@@ -2,7 +2,7 @@ import type { Knex } from "knex";
 
 export const MatchWinnerView = (db: Knex) => ({
     view_name: "MatchWinnerView",
-    initialize(view) {
+    initialize(view: Knex.ViewBuilder) {
         view.columns(["match_id", "user_id", "win_count"]);
         view.as(
             db("MatchPlayer as sp")

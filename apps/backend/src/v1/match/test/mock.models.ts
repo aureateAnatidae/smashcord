@@ -1,18 +1,25 @@
+import { ssbu_character_names } from "@seeds/SSBUCharacters";
 import { rand_character_array, randint, snowflake } from "@test/mock";
-import type { MatchPlayerRecord, MatchRecord } from "@v1/match/models";
+import type {
+    MatchCharacterRecord,
+    MatchPlayerRecord,
+    MatchRecord,
+} from "@v1/match/models";
+import type { Knex } from "knex";
 
-export const mock_MatchRecord: Partial<MatchRecord> = (
+export const mock_MatchRecord = (
     match_record: Partial<MatchRecord>,
-) => {
+): Omit<MatchRecord, "created_at"> => {
     return {
+        match_id: randint(1000),
         guild_id: snowflake(),
         ...match_record,
     };
 };
 
-export const mock_MatchPlayerRecord: MatchPlayerRecord = (
+export const mock_MatchPlayerRecord = (
     match_player_record: Partial<MatchPlayerRecord>,
-) => {
+): MatchPlayerRecord => {
     return {
         match_id: randint(1000),
         user_id: snowflake(),
@@ -21,17 +28,18 @@ export const mock_MatchPlayerRecord: MatchPlayerRecord = (
     };
 };
 
-export const mock_MatchCharacterRecord: MatchCharacterRecord = (
-    match_character_record,
-) => {
+export const mock_MatchCharacterRecord = (
+    match_character_record: Partial<MatchCharacterRecord>,
+): MatchCharacterRecord => {
     return {
+        match_id: randint(1000),
         user_id: snowflake(),
-        figther_number: randint(87),
+        fighter_number: randint(ssbu_character_names.length),
         ...match_character_record,
     };
 };
 
-export async function seed(knex) {
+export async function seed(knex: Knex) {
     // Ten total players, one hundred games between them in a single guild.
     const guild_id = snowflake();
     const user_id_list = Array.from({ length: 10 }, snowflake);

@@ -15,13 +15,12 @@ export default defineConfig({
         projects: [
             {
                 test: {
-                    alias: {
-                        "@seeds": resolve(__dirname, "./seeds"),
-                        "@test": resolve(__dirname, "./src/test"),
-                        "@db": resolve(__dirname, "./src/db"),
-                        "@v1": resolve(__dirname, "./src/v1"),
+                    alias: src_paths.alias,
+                    include: ["src/**/*.test.ts"],
+                    typecheck: {
+                        include: ["src/**/*"],
+                        enabled: true
                     },
-                    include: ["src/**/unit.test.ts"],
                     name: { label: "unit" },
                 },
             },

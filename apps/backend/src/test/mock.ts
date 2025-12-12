@@ -7,12 +7,17 @@ export const snowflake = () =>
         length: 18,
     });
 
-export const randint = (max) => {
+export const randint = (max: number) => {
     return Math.floor(Math.random() * max);
 };
 
-export const rand_character_array: Array<(typeof ssbu_character_names)[number]> = () =>
-    Array.from(
-        { length: 1 + randint(4) },
-        () => ssbu_character_names[randint(ssbu_character_names.length)],
-    );
+export const rand_character_array = (): Array<
+    (typeof ssbu_character_names)[number]
+> => [
+    ...new Set(
+        Array.from(
+            { length: 1 + randint(4) },
+            () => ssbu_character_names[randint(ssbu_character_names.length)],
+        ),
+    ),
+];

@@ -7,4 +7,6 @@ export async function getUserPoints(
 export async function getLeaderboard(
     guild_id: string,
     tier: number,
-): Promise<Array<string>> {}
+): Promise<Array<string>> {
+    return ["B", "A"]
+}

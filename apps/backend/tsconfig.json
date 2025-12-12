@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
+        "noEmit": true,
         "target": "ESNext",
-        "module": "NodeNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
 
         "rootDir": ".",
         "outDir": "./dist",
@@ -21,5 +23,10 @@
             "@db/*": ["db/*"],
             "@v1/*": ["v1/*"]
         }
-    }
+    },
+    "exclude": [
+        "vitest.config.ts",
+        "dist",
+        "node_modules"
+      ]
 }

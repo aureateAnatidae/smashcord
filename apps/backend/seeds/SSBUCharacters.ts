@@ -1,3 +1,5 @@
+import type {Knex} from "knex";
+
 export const ssbu_character_names = [
     "Mario",
     "Donkey Kong",
@@ -87,7 +89,7 @@ export const ssbu_character_names = [
     "Sora",
 ];
 
-export async function seed(knex) {
+export async function seed(knex: Knex) {
     await knex("SSBUChar").del();
     await knex("SSBUChar").insert(
         ssbu_character_names.map((character_name) => {

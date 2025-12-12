@@ -1,4 +1,5 @@
 import { knexDb } from "@db/knexfile";
+import type { ssbu_character_names } from "@seeds/SSBUCharacters";
 import type { MatchPlayer, MatchReport } from "@v1/match/schemas";
 import type { Knex } from "knex";
 
@@ -9,7 +10,7 @@ import type { Knex } from "knex";
 export async function reportMatchResult(
     match_report: MatchReport,
     db: Knex = knexDb,
-): Promise<MatchReport> {
+): Promise<void> {
     const trx = await db.transaction();
 
     trx.commit();
@@ -29,31 +30,39 @@ export async function createMatch(
 /** Create a record in MatchPlayer. */
 export async function createMatchPlayer(
     match_id: number,
-    match_player: MatchPlayer,
+    user_id: string,
+    win_count: number,
     db: Knex = knexDb,
 ): Promise<void> {
-    const { user_id, win_count } = match_player;
     await db("MatchPlayer").insert({ match_id, user_id, win_count });
     return;
 }
 
 /** Create a record in MatchCharacterTable. */
 export async function createMatchCharacter(
-    characters: Array<number>,
+    match_id: number,
+    user_id: string,
+    character: Array<number>,
     db: Knex = knexDb,
-): Promise<number> {
-    await db("MatchCharacter").insert({});
+): Promise<void> {
+    for (let i = 0; i < character.length; i++) {
+        await db("MatchCharacter").insert({
+            match_id,
+            user_id,
+            fighter_number: character[i],
+        });
+    }
     return;
 }
 
 // Consider some sort of fighly flexible minimal abstraction over SQL so that developer/user can provide any bounds to search in table
-export async function getMatches(user_id: string): Promise<Array<MatchRecord>> {}
-export async function getMatchesNLast(
-    user_id: string,
-    n: number,
-): Promise<Array<MatchRecord>> {}
-export async function getMatchesDateRange(
-    user_id: string,
-    start: string,
-    end: string,
-): Promise<Array<MatchRecord>> {}
+// export async function getMatches(user_id: string): Promise<Array<MatchRecord>> {}
+// export async function getMatchesNLast(
+//     user_id: string,
+//     n: number,
+// ): Promise<Array<MatchRecord>> {}
+// export async function getMatchesDateRange(
+//     user_id: string,
+//     start: string,
+//     end: string,
+// ): Promise<Array<MatchRecord>> {}

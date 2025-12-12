@@ -1,4 +1,5 @@
 import { seed as SSBUCharacters_seed } from "@seeds/SSBUCharacters";
+import type { Knex } from "knex";
 import pino from "pino";
 
 const log = pino();
@@ -9,15 +10,17 @@ export class SeedSource {
         return Promise.resolve(["SSBUCharacters"]);
     }
 
-    getSeed(seed) {
+    async getSeed(seed: string) {
         log.info(`Seeding ${seed}`);
         switch (seed) {
             case "SSBUCharacters":
                 return {
-                    async seed(knex) {
+                    async seed(knex: Knex) {
                         await SSBUCharacters_seed(knex);
                     },
                 };
+            default:
+                throw new Error(`Invalid seed: "{seed}"`);
         }
     }
 }
