@@ -5,7 +5,7 @@ import {
     MatchTable,
     SSBUCharTable,
 } from "@v1/match/models";
-import { MatchWinnerView } from "@v1/match/views";
+import { MatchReportView, MatchWinnerView } from "@v1/match/views";
 import type { Knex } from "knex";
 
 import pino from "pino";
@@ -13,7 +13,7 @@ import pino from "pino";
 const log = pino();
 
 const tables = [MatchTable, MatchPlayerTable, MatchCharacterTable, SSBUCharTable];
-const views = [MatchWinnerView];
+const views = [MatchWinnerView, MatchReportView];
 
 async function create_table_if_notexists(
     db: Knex = knexDb,

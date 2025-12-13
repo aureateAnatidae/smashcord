@@ -1,12 +1,13 @@
 import { knexDb } from "@db/knexfile";
-import type { MatchPlayer, MatchReport } from "@v1/match/schemas";
+import type { MatchPlayer, MatchQuery, MatchReport } from "@v1/match/schemas";
 import type { Knex } from "knex";
+import type { MatchReportDerivedRow } from "@v1/match/views";
 
 /** Report a match.
  * Transactionally, create a record in the Match table, then create the matching pair
  * of records in MatchResult table, then the records for the MatchCharacter table.
  */
-export async function reportMatchResult(
+export async function reportMatch(
     match_report: MatchReport,
     db: Knex = knexDb,
 ): Promise<number> {
@@ -26,6 +27,16 @@ export async function reportMatchResult(
     }
     trx.commit();
     return match_id;
+}
+
+export async function getMatches(
+    match_query: MatchQuery,
+    db: Knex = knexDb,
+): Promise<Array<MatchReportDerivedRow>> {
+    const match_reports = await db<MatchReportDerivedRow>("MatchReportView")
+        .select()
+        .where({ ...match_query });
+    return match_reports;
 }
 
 /** Create a record in Match, returning the incrementing `match_id` of the new record.
@@ -62,7 +73,6 @@ export async function createMatchCharacter(
         user_id,
         fighter_number: character,
     });
-
     return;
 }
 

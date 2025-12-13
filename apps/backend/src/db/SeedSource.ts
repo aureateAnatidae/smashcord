@@ -20,7 +20,7 @@ export class SeedSource {
                     },
                 };
             default:
-                throw new Error(`Invalid seed: "{seed}"`);
+                throw new Error(`Invalid seed: "${seed}"`);
         }
     }
 }
