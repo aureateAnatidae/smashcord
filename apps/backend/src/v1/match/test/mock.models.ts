@@ -5,6 +5,7 @@ import type {
     MatchPlayerRecord,
     MatchRecord,
 } from "@v1/match/models";
+import { SSBUCharEnumToInt } from "@v1/match/schemas";
 import type { Knex } from "knex";
 
 export const mock_MatchRecord = (
@@ -72,8 +73,19 @@ export async function seed(knex: Knex) {
         });
         await knex("MatchPlayer").insert({
             match_id,
-            user_id: user_id_list[pair[swap_user_id + (1 % 2)]],
-            win_count: scores[swap_score + (1 % 2)],
+            user_id: user_id_list[pair[(swap_user_id + 1) % 2]],
+            win_count: scores[(swap_score + 1) % 2],
         });
+
+        for (let p_i = 0; p_i < pair.length; p_i++) {
+            const characters = rand_character_array();
+            for (let c_i = 0; c_i < characters.length; c_i++) {
+                await knex("MatchCharacter").insert({
+                    match_id,
+                    user_id: user_id_list[pair[p_i]],
+                    fighter_number: SSBUCharEnumToInt.parse(characters[c_i]),
+                });
+            }
+        }
     }
 }

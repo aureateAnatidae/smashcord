@@ -1,20 +1,16 @@
 import { rand_character_array, randint, snowflake } from "@test/mock";
-import type { MatchPlayer, MatchReport } from "@v1/match/schemas";
+import { MatchPlayer, type MatchReport } from "@v1/match/schemas";
 
-export const mock_MatchPlayer = (
-    match_player?: Partial<MatchPlayer>,
-): MatchPlayer => {
-    return {
+export const mock_MatchPlayer = (match_player?: Partial<MatchPlayer>): MatchPlayer => {
+    return MatchPlayer.parse({
         user_id: snowflake(),
         win_count: randint(5),
         character: rand_character_array(),
         ...match_player,
-    };
+    });
 };
 
-export const mock_MatchReport = (
-    match_report?: Partial<MatchReport>,
-): MatchReport => {
+export const mock_MatchReport = (match_report?: Partial<MatchReport>): MatchReport => {
     return {
         guild_id: snowflake(),
         players:

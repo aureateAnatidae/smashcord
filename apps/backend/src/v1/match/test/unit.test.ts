@@ -1,7 +1,6 @@
 import { init_tables, init_views, teardown } from "@db/init_tables";
 import { test_knexDb } from "@test/test_knexfile";
 
-import { MatchReport, SSBUCharEnumToInt } from "@v1/match/schemas";
 import {
     createMatch,
     createMatchCharacter,
@@ -103,35 +102,25 @@ describe("Match DB operations", () => {
     describe("Inserting MatchCharacter records", () => {
         test("Insert a pair of mock MatchCharacter records", async () => {
             const match_id = await createMatch(mockMatchReport.guild_id, test_knexDb);
-            await createMatchPlayer(
-                match_id,
-                mockMatchReport.players[0].user_id,
-                mockMatchReport.players[0].win_count,
-                test_knexDb,
-            );
-            await createMatchPlayer(
-                match_id,
-                mockMatchReport.players[1].user_id,
-                mockMatchReport.players[1].win_count,
-                test_knexDb,
-            );
 
-            await createMatchCharacter(
-                match_id,
-                mockMatchReport.players[0].user_id,
-                mockMatchReport.players[0].character.map((v: string) =>
-                    SSBUCharEnumToInt.parse(v),
-                ),
-                test_knexDb,
-            );
-            await createMatchCharacter(
-                match_id,
-                mockMatchReport.players[1].user_id,
-                mockMatchReport.players[1].character.map((v: string) =>
-                    SSBUCharEnumToInt.parse(v),
-                ),
-                test_knexDb,
-            );
+            for (let p_i = 0; p_i < mockMatchReport.players.length; p_i++) {
+                const player = mockMatchReport.players[p_i];
+                await createMatchPlayer(
+                    match_id,
+                    player.user_id,
+                    player.win_count,
+                    test_knexDb,
+                );
+                for (let c_i = 0; c_i < player.character.length; c_i++) {
+                    const character = player.character[c_i];
+                    await createMatchCharacter(
+                        match_id,
+                        player.user_id,
+                        character,
+                        test_knexDb,
+                    );
+                }
+            }
 
             const created_match_character_records = await test_knexDb("MatchCharacter")
                 .select()
@@ -145,7 +134,7 @@ describe("Match DB operations", () => {
                         result.push({
                             match_id,
                             user_id: player.user_id,
-                            fighter_number: SSBUCharEnumToInt.parse(character),
+                            fighter_number: character,
                         });
                     }
                 }
@@ -156,12 +145,26 @@ describe("Match DB operations", () => {
                 "When retrieved, both MatchCharacter records have the same data as provided",
             ).toEqual(expect.arrayContaining(expected_match_characters()));
         });
-    });
 
-    describe.todo(
-        "Cannot insert MatchCharacter where [match_id, user_id, fighter_number] is not unique",
-    );
-    describe.todo(
-        "Cannot insert MatchCharacter where a fighter_number is not in the SSBUCharTable",
-    );
+        test.fails("Cannot insert MatchCharacter where [match_id, user_id, fighter_number] is not unique, specifically, `fighter_number`", async () => {
+            const match_id = await createMatch(mockMatchReport.guild_id, test_knexDb);
+            for (let i = 0; i < 2; i++) {
+                await createMatchCharacter(
+                    match_id,
+                    mockMatchReport.players[i].user_id,
+                    mockMatchReport.players[1].character[0],
+                    test_knexDb,
+                );
+            }
+        });
+        test.fails("Cannot insert MatchCharacter where a fighter_number is not in the SSBUCharTable", async () => {
+            const match_id = await createMatch(mockMatchReport.guild_id, test_knexDb);
+            await createMatchCharacter(
+                match_id,
+                mockMatchReport.players[1].user_id,
+                104,
+                test_knexDb,
+            );
+        });
+    });
 });
