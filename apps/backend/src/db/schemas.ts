@@ -10,7 +10,7 @@ export const SQLiteDateTimeToISODateTime = z.codec(
     {
         decode: (sqlite_datetime: string) => {
             if (z.iso.datetime().safeParse(sqlite_datetime).success) {
-                return sqlite_datetime
+                return sqlite_datetime;
             }
             const withT = sqlite_datetime.replace(" ", "T");
             const hasTz = /([zZ]|[+-]\d{2}:\d{2})$/.test(withT);

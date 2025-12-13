@@ -1,5 +1,5 @@
-import { z } from "zod";
 import type { Knex } from "knex";
+import { z } from "zod";
 
 export const MatchRecord = z.object({
     match_id: z.int(),
@@ -50,7 +50,7 @@ export type MatchCharacterRecord = z.infer<typeof MatchCharacterRecord>;
 export const MatchCharacterTable = {
     table_name: "MatchCharacter",
     initialize(table: Knex.TableBuilder) {
-        table.primary(["match_id", "user_id", "fighter_number"])
+        table.primary(["match_id", "user_id", "fighter_number"]);
 
         table.integer("match_id").unsigned();
         table.string("user_id");

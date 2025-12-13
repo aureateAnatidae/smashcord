@@ -19,7 +19,7 @@ export default defineConfig({
                     include: ["src/**/*.test.ts"],
                     typecheck: {
                         include: ["src/**/*"],
-                        enabled: true
+                        enabled: true,
                     },
                     name: { label: "unit" },
                 },

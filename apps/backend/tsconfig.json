@@ -24,9 +24,5 @@
             "@v1/*": ["v1/*"]
         }
     },
-    "exclude": [
-        "vitest.config.ts",
-        "dist",
-        "node_modules"
-      ]
+    "exclude": ["vitest.config.ts", "dist", "node_modules"]
 }

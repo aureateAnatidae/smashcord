@@ -1,7 +1,7 @@
 import { knexDb } from "@db/knexfile";
-import type { MatchPlayer, MatchQuery, MatchReport } from "@v1/match/schemas";
-import type { Knex } from "knex";
+import type { MatchQuery, MatchReport } from "@v1/match/schemas";
 import type { MatchReportDerivedRow } from "@v1/match/views";
+import type { Knex } from "knex";
 
 /** Report a match.
  * Transactionally, create a record in the Match table, then create the matching pair

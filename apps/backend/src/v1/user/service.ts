@@ -8,5 +8,5 @@ export async function getLeaderboard(
     guild_id: string,
     tier: number,
 ): Promise<Array<string>> {
-    return ["B", "A"]
+    return ["B", "A"];
 }

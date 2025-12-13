@@ -1,4 +1,4 @@
-import type {Knex} from "knex";
+import type { Knex } from "knex";
 
 export const ssbu_character_names = [
     "Mario",

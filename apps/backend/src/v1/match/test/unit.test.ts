@@ -1,6 +1,7 @@
 import { init_tables, init_views, teardown } from "@db/init_tables";
 import { test_knexDb } from "@test/test_knexfile";
-import type { MatchPlayer, MatchQuery, MatchReport } from "@v1/match/schemas";
+import type { MatchCharacterRecord } from "@v1/match/models";
+import type { MatchQuery, MatchReport } from "@v1/match/schemas";
 import {
     createMatch,
     createMatchCharacter,
@@ -9,9 +10,8 @@ import {
     reportMatch,
 } from "@v1/match/service";
 import { mock_MatchReport } from "@v1/match/test/mock.schemas";
+import { MatchReportDerivedRow } from "@v1/match/views";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import type { MatchCharacterRecord, MatchPlayerRecord } from "../models";
-import { MatchReportDerivedRow } from "../views";
 
 // const _mockMatchReport = MatchReport.parse({
 //     guild_id: "19283746",
@@ -122,12 +122,12 @@ describe("Match DB operations", () => {
             const expected_match_characters = () => {
                 const result = [];
                 for (let p_i = 0; p_i < mockMatchReport.players.length; p_i++) {
-                    const player = mockMatchReport.players[p_i];
-                    for (let c_i = 0; c_i < player.character.length; c_i++) {
-                        const fighter_number = player.character[c_i];
+                    const { user_id, character } = mockMatchReport.players[p_i];
+                    for (let c_i = 0; c_i < character.length; c_i++) {
+                        const fighter_number = character[c_i];
                         result.push({
                             match_id,
-                            user_id: player.user_id,
+                            user_id,
                             fighter_number,
                         });
                     }
@@ -165,7 +165,7 @@ describe("Match DB operations", () => {
     describe("Insert all records for an entire MatchReport (covers all insertion tests)", async () => {
         test("Report a match", async () => {
             const match_id = await reportMatch(mockMatchReport, test_knexDb);
-            const match_record = await test_knexDb("Match").first().where({ match_id });
+            const { guild_id } = mockMatchReport;
             const match_player_records = await test_knexDb("MatchPlayer")
                 .select()
                 .where({ match_id });
@@ -173,7 +173,7 @@ describe("Match DB operations", () => {
                 .select()
                 .where({ match_id });
             const expected: MatchReport = {
-                guild_id: match_record.guild_id,
+                guild_id,
                 players: match_player_records.map(({ user_id, win_count }) => ({
                     user_id,
                     win_count,
@@ -203,9 +203,7 @@ describe("Match DB operations", () => {
     describe("Retrieve a full written MatchReport record", async () => {
         test("Retrieve a derived row from MatchReportView by match_id", async () => {
             const match_id = await reportMatch(mockMatchReport, test_knexDb);
-            const match_record = await test_knexDb("Match")
-                .select()
-                .where({ match_id });
+            const { guild_id } = mockMatchReport;
 
             const match_query: MatchQuery = { match_id };
             const result = await getMatches(match_query, test_knexDb);
@@ -213,15 +211,15 @@ describe("Match DB operations", () => {
 
             const expected = [];
             for (let p_i = 0; p_i < mockMatchReport.players.length; p_i++) {
-                const player = mockMatchReport.players[p_i];
-                for (let c_i = 0; c_i < player.character.length; c_i++) {
-                    const fighter_number = player.character[c_i];
+                const { user_id, win_count, character } = mockMatchReport.players[p_i];
+                for (let c_i = 0; c_i < character.length; c_i++) {
+                    const fighter_number = character[c_i];
                     expected.push(
                         MatchReportDerivedRow.parse({
                             match_id,
-                            guild_id: mockMatchReport.guild_id,
-                            user_id: player.user_id,
-                            win_count: player.win_count,
+                            guild_id,
+                            user_id,
+                            win_count,
                             fighter_number,
                             created_at,
                         }),
