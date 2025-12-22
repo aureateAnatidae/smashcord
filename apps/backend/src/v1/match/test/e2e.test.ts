@@ -7,8 +7,7 @@ import { Hono } from "hono";
 import { testClient } from "hono/testing";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
-
-// TODO: Unsure how to write tests here. 
+// TODO: Unsure how to write tests here.
 // If e2e tests should not be a superset of tested functionality on integration tests, can we prevent total overlapping?
 // How can we inject test_knexDb to the `service.ts` functions while only calling HTTP routes?
 describe("A user may report a Match", () => {

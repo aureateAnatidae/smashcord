@@ -47,11 +47,11 @@ app.post(
     }),
     validator("json", MatchReport),
     async (c) => {
-        const match_report: MatchReport = c.req.valid("json")
-        
+        const match_report: MatchReport = c.req.valid("json");
+
         const result = await reportMatch(match_report);
-        return c.json(result)
-    }
+        return c.json(result);
+    },
 );
 
 export default app;

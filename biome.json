@@ -7,7 +7,13 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "includes": ["**", "!!**/node_modules", "!!**/coverage", "!!docsite"]
+        "includes": [
+            "**",
+            "!!**/node_modules",
+            "!!**/dist",
+            "!!**/coverage",
+            "!!docsite"
+        ]
     },
     "formatter": {
         "enabled": true,
