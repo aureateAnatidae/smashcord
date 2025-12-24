@@ -11,32 +11,33 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Handle the boring stuff',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+          Grindcord is designed to assist in all the bureaucracy of running a leaderboard
+          so that you can get right back to the fun part of engaging in competition.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Easy, Simple, and Extensible',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+          Grindcord is accessible to anyone from competitors, to server admins, to TOs,
+          whether or not they have technical experience, and especially supports those with
+          experience to use Grindcord to its full potential.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Open-source, self-hostable',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+          Grindcord is created by competitors, for competitors. We invite anyone,
+          regardless of experience, to use Grindcord for their own purposes.
       </>
     ),
   },
