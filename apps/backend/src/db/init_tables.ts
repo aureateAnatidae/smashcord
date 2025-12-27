@@ -36,8 +36,14 @@ export async function init_tables(db: Knex = knexDb) {
     for (const table of tables) {
         await create_table_if_notexists(trx, table.table_name, table.initialize);
     }
-    await trx.seed.run();
     await trx.commit();
+}
+
+export async function run_seed(
+    seedSource: Knex.SeedSource<unknown>,
+    db: Knex = knexDb,
+) {
+    await db.seed.run({ seedSource });
 }
 
 export async function init_views(db: Knex = knexDb) {

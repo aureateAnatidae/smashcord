@@ -1,4 +1,4 @@
-import { ssbu_character_names } from "@seeds/SSBUCharacters";
+import { ssbu_character_names } from "@db/seeds/SSBUCharacters";
 import { rand_character_array, randint, snowflake } from "@test/mock";
 import type {
     MatchCharacterRecord,
@@ -40,6 +40,10 @@ export const mock_MatchCharacterRecord = (
     };
 };
 
+/** TODO: Might not be necessary to insert so many random records without a way to test them.
+ * Find a way to exploit all that coverage.
+ * Generate MatchReport data that matches the database records so that we can check parity?
+ */
 export async function seed(knex: Knex) {
     // Ten total players, one hundred games between them in a single guild.
     const guild_id = snowflake();

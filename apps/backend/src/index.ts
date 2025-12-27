@@ -1,4 +1,5 @@
-import { init_tables, init_views, teardown } from "@db/init_tables";
+import { init_tables, init_views, run_seed, teardown } from "@db/init_tables";
+import { SeedSource as SSBUCharacterSeedSource } from "@db/SeedSource";
 import { serve } from "@hono/node-server";
 import { honoLogger } from "@logtape/hono";
 import { configure, getConsoleSink } from "@logtape/logtape";
@@ -20,6 +21,9 @@ const app = new Hono({ strict: false });
 
 await teardown();
 await init_tables();
+
+await run_seed(new SSBUCharacterSeedSource());
+
 await init_views();
 
 app.use(requestId());

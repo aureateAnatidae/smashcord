@@ -1,4 +1,4 @@
-import { ssbu_character_names } from "@seeds/SSBUCharacters";
+import { ssbu_character_names } from "@db/seeds/SSBUCharacters";
 import { z } from "zod";
 
 export const SSBUCharEnum = z.enum(ssbu_character_names);

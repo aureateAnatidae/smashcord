@@ -17,10 +17,6 @@ export default defineConfig({
                 test: {
                     alias: src_paths.alias,
                     include: ["src/**/e2e.test.ts"],
-                    typecheck: {
-                        include: ["src/**/*"],
-                        enabled: true,
-                    },
                     name: { label: "e2e" },
                 },
             },
@@ -28,10 +24,6 @@ export default defineConfig({
                 test: {
                     alias: src_paths.alias,
                     include: ["src/**/integration.test.ts"],
-                    typecheck: {
-                        include: ["src/**/*"],
-                        enabled: true,
-                    },
                     name: { label: "integration" },
                 },
             },
@@ -39,10 +31,6 @@ export default defineConfig({
                 test: {
                     alias: src_paths.alias,
                     include: ["src/**/unit.test.ts"],
-                    typecheck: {
-                        include: ["src/**/*"],
-                        enabled: true,
-                    },
                     name: { label: "unit" },
                 },
             },

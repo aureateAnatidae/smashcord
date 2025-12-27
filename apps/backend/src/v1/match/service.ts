@@ -21,8 +21,8 @@ export async function reportMatch(
         await createMatchPlayer(match_id, player.user_id, player.win_count, trx);
 
         for (let c_i = 0; c_i < player.character.length; c_i++) {
-            const character = player.character[c_i];
-            await createMatchCharacter(match_id, player.user_id, character, trx);
+            const fighter_number = player.character[c_i];
+            await createMatchCharacter(match_id, player.user_id, fighter_number, trx);
         }
     }
     trx.commit();
@@ -55,13 +55,13 @@ export async function createMatchPlayer(
 export async function createMatchCharacter(
     match_id: number,
     user_id: string,
-    character: number,
+    fighter_number: number,
     db: Knex = knexDb,
 ): Promise<void> {
     await db("MatchCharacter").insert({
         match_id,
         user_id,
-        fighter_number: character,
+        fighter_number,
     });
     return;
 }
