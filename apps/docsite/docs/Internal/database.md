@@ -74,16 +74,18 @@ erDiagram
         datetime    end_at
     }
     Match }|--|| Season: "was played during"
-    Guild ||--o{ Season: "has a"
+    Guild }|--o{ Season: "has a"
 ```
 
 ##### Entity Relation Diagram for Seasons.
 
 A guild's "current" season is a `Season` record for which the `guild_id` matches, and the system datetime is between `start_at` and `end_at`.
 
+More than one guild may participate in a single season, however, a guild may only participate in a single season.
+
 > Queries for a guild's current season should be optimized by creating an index on a guild.
 
-A `Match` is played in a `Season` if the `season_id` matches a `Season` record's `season_id`. 
+A `Match` is played in a `Season` if the `season_id` matches a `Season` record's `season_id`.
 
 In addition, a `Season` in which participants will be designated an individual tier. Participants in a `Season` are `GuildMember`s who report having participated in a `Match` during a `Season`.
 
