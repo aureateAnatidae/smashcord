@@ -14,7 +14,8 @@ export const SeasonQuery = z
         season_id: z.int(),
         guild_id: z.string(),
         season_name: z.string(),
-        during: z.iso.datetime(),
+        after: z.iso.datetime(),
+        before: z.iso.datetime(),
     })
     .partial();
 export type SeasonQuery = z.infer<typeof SeasonQuery>;

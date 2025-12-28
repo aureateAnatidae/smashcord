@@ -7,7 +7,6 @@ import {
     currentSeasonRecordFactory,
     futureSeasonRecordFactory,
     pastSeasonRecordFactory,
-    seasonRecordFactory,
 } from "@v1/season/test/models.factories";
 import type { Knex } from "knex";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
@@ -43,7 +42,7 @@ describe("Season table operations", () => {
         await teardown(test_knexDb);
     });
     describe("Use `getSeasons`", () => {
-        test("Typical", async () => {
+        test("Based on `after` and `before` arguments", async () => {
             const past_season = pastSeasonRecordFactory();
             const current_season = currentSeasonRecordFactory();
             const future_season = futureSeasonRecordFactory();
@@ -54,19 +53,46 @@ describe("Season table operations", () => {
                 test_knexDb,
             );
 
-            const result = await getSeasons({ during: (new Date()).toISOString() }, test_knexDb);
+            const current_result = await getSeasons(
+                { before: new Date().toISOString(), after: new Date().toISOString() },
+                test_knexDb,
+            );
+            expect(current_result, "Returns only the ongoing Season").toHaveLength(1);
+            expect(current_result[0]).toMatchObject(current_season);
 
-            expect(result).toHaveLength(1);
-            expect(result[0]).toMatchObject(current_season);
+            const reverse_result = await getSeasons(
+                {
+                    before: new Date(Date.now() - 1000).toISOString(),
+                    after: new Date(Date.now() + 1000).toISOString(),
+                },
+                test_knexDb,
+            );
+            expect(reverse_result, "`after` > `before`").toHaveLength(1);
+            expect(reverse_result[0]).toMatchObject(current_season);
 
-            // const match_id = await createMatch(mockMatchReport.guild_id, test_knexDb);
-            // const created_match = await test_knexDb("Match")
-            //     .first()
-            //     .where({ match_id });
-            // expect(
-            //     created_match.guild_id,
-            //     "When retrieved, the Match record has the same data as is provided",
-            // ).toEqual(mockMatchReport.guild_id);
+            const current_future_result = await getSeasons(
+                { after: new Date().toISOString() },
+                test_knexDb,
+            );
+            expect(current_future_result, "Returns current and future").toHaveLength(2);
+            expect(current_future_result).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining(current_season),
+                    expect.objectContaining(future_season),
+                ]),
+            );
+
+            const current_past_result = await getSeasons(
+                { before: new Date().toISOString() },
+                test_knexDb,
+            );
+            expect(current_past_result, "Returns current and past").toHaveLength(2);
+            expect(current_past_result).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining(current_season),
+                    expect.objectContaining(past_season),
+                ]),
+            );
         });
     });
 });

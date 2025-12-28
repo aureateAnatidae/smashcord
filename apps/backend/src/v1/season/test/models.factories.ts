@@ -20,7 +20,8 @@ export const currentSeasonRecordFactory = (
         | Partial<Omit<SeasonRecord, "start_at" | "end_at">>
         | undefined = undefined,
 ): Omit<SeasonRecord, "season_id"> => {
-    return seasonRecordFactory(season_record);
+    const season_name = `Current Season - ${faker.animal.fish()}`;
+    return seasonRecordFactory({ season_name, ...season_record });
 };
 
 export const pastSeasonRecordFactory = (
@@ -28,9 +29,11 @@ export const pastSeasonRecordFactory = (
         | Partial<Omit<SeasonRecord, "start_at" | "end_at">>
         | undefined = undefined,
 ): Omit<SeasonRecord, "season_id"> => {
+    const season_name = `Past Season - ${faker.animal.fish()}`;
+
     const end_at = faker.date.recent().toISOString();
     const start_at = faker.date.past({ refDate: end_at }).toISOString();
-    return seasonRecordFactory({ start_at, end_at, ...season_record });
+    return seasonRecordFactory({ season_name, start_at, end_at, ...season_record });
 };
 
 export const futureSeasonRecordFactory = (
@@ -38,9 +41,11 @@ export const futureSeasonRecordFactory = (
         | Partial<Omit<SeasonRecord, "start_at" | "end_at">>
         | undefined = undefined,
 ): Omit<SeasonRecord, "season_id"> => {
+    const season_name = `Future Season - ${faker.animal.fish()}`;
+
     const start_at = faker.date.soon().toISOString();
     const end_at = faker.date.future({ refDate: start_at }).toISOString();
-    return seasonRecordFactory({ start_at, end_at, ...season_record });
+    return seasonRecordFactory({ season_name, start_at, end_at, ...season_record });
 };
 
 export async function seed(
